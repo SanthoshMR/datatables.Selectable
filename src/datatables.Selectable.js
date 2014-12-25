@@ -4,6 +4,8 @@
  * Author:      Basil Gren
  * License:     MIT
  * Version:     1.0.2 (25-Jul-2012)
+ * Version:     1.0.3 (25-Nov-2014)
+ * CHNG-SANTHOSH -> A few minor tweaks to make it work for current version of dataTables.
  */
 (function ($) {
 
@@ -13,7 +15,7 @@
         bShowControls:      true,       // Determines if selection controls (size etc) will be shown
         bSingleRowSelect:   false,      // Set to true if only one row at a time can be selected
         bSelectAllCheckbox: false,      // When true, a checkbox will be rendered in column header,
-                                          // which will select/deselect all rows on current page
+                                        // which will select/deselect all rows on current page
         sSelectionTrigger:     'checkbox', // Determines an area which should be clicked to select a row.
                                           // Available options: 'checkbox', 'cell', 'row'
 
@@ -25,7 +27,7 @@
 
         // I18n options
         oLanguage: {
-            sSelectedRows: 'Selected rows: _COUNT_', // Text for selection size counter
+            sSelectedRows: 'Selected rows: <span class="badge alert-success">_COUNT_</span>', // Text for selection size counter
             sClearSelection: 'Clear selection'       // Text for 'Clear selection' link
         }
     };
@@ -229,12 +231,11 @@
         this.oDTSettings.oApi._fnCallbackReg(this.oDTSettings, 'aoInitComplete',
             function() {
                 var $cell = $(that.oDTSettings.nTHead).find('tr :nth-child(' + that.options.iColNumber + ')');
-                var $cells = $(that.oDTSettings.nTBody).find('td:nth-child(' + that.options.iColNumber + ')');
                 var $selectAll = $('<input type="checkbox" />');
                 that.$selectAll = $selectAll;
 
                 $selectAll.groupToggle({
-                    groupParent: $cells,
+                    groupParent: $(that.oDTSettings.nTBody),
 
                     onBeforeChange: function() {
                         that._massChange = true; // Set mass change flag to ignore multiple update events.
